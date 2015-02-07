@@ -1,0 +1,427 @@
+State 0:
+          program ::= * commands
+      (1) program ::= *
+          commands ::= * commands command
+          commands ::= * command
+          command ::= * command_begin convention call assign_list command_end
+          command ::= * command_end
+      (6) command_begin ::= *
+          command_end ::= * SEMICOLON
+
+                             $ reduce 1
+                     SEMICOLON shift  55
+                       program accept
+                      commands shift  3
+                       command shift  30
+                 command_begin shift  10
+                   command_end shift  31
+                     {default} reduce 6
+
+State 1:
+          call ::= callee BRACKET_LEFT * argument_list BRACKET_RIGHT
+          call ::= callee BRACKET_LEFT * BRACKET_RIGHT
+          argument_list ::= * argument_list COMMA argument
+          argument_list ::= * argument
+          argument ::= * VARIABLE
+          argument ::= * BRACKET_LEFT IDENTIFIER BRACKET_RIGHT VARIABLE
+          argument ::= * STRING
+          argument ::= * INTEGER
+          argument ::= * array
+          array ::= * array_begin array_entry_list array_end
+          array_begin ::= * SQUARE_BRACKET_LEFT
+
+                  BRACKET_LEFT shift  22
+                 BRACKET_RIGHT shift  36
+                        STRING shift  45
+                      VARIABLE shift  47
+                       INTEGER shift  44
+           SQUARE_BRACKET_LEFT shift  37
+                 argument_list shift  12
+                      argument shift  35
+                         array shift  43
+                   array_begin shift  5
+
+State 2:
+          argument_list ::= argument_list COMMA * argument
+          argument ::= * VARIABLE
+          argument ::= * BRACKET_LEFT IDENTIFIER BRACKET_RIGHT VARIABLE
+          argument ::= * STRING
+          argument ::= * INTEGER
+          argument ::= * array
+          array ::= * array_begin array_entry_list array_end
+          array_begin ::= * SQUARE_BRACKET_LEFT
+
+                  BRACKET_LEFT shift  22
+                        STRING shift  45
+                      VARIABLE shift  47
+                       INTEGER shift  44
+           SQUARE_BRACKET_LEFT shift  37
+                      argument shift  48
+                         array shift  43
+                   array_begin shift  5
+
+State 3:
+      (0) program ::= commands *
+          commands ::= commands * command
+          command ::= * command_begin convention call assign_list command_end
+          command ::= * command_end
+      (6) command_begin ::= *
+          command_end ::= * SEMICOLON
+
+                             $ reduce 0
+                     SEMICOLON shift  55
+                       command shift  57
+                 command_begin shift  10
+                   command_end shift  31
+                     {default} reduce 6
+
+State 4:
+          command ::= command_begin convention * call assign_list command_end
+          call ::= * callee BRACKET_LEFT argument_list BRACKET_RIGHT
+          call ::= * callee BRACKET_LEFT BRACKET_RIGHT
+          callee ::= * FILENAME EXCLAMATION IDENTIFIER
+          callee ::= * STRING EXCLAMATION IDENTIFIER
+
+                      FILENAME shift  17
+                        STRING shift  15
+                          call shift  11
+                        callee shift  23
+
+State 5:
+          array ::= array_begin * array_entry_list array_end
+          array_entry_list ::= * array_entry_list COMMA array_entry
+          array_entry_list ::= * array_entry
+          array_entry ::= * INTEGER
+          array_entry ::= * INTEGER COLON INTEGER
+
+                       INTEGER shift  19
+              array_entry_list shift  7
+                   array_entry shift  38
+
+State 6:
+          assign_list ::= assign_list ASSIGN * assign
+          assign ::= * VARIABLE
+          assign ::= * BRACKET_LEFT IDENTIFIER BRACKET_RIGHT VARIABLE
+          assign ::= * INTEGER VARIABLE
+          assign ::= * INTEGER BRACKET_LEFT IDENTIFIER BRACKET_RIGHT VARIABLE
+
+                  BRACKET_LEFT shift  29
+                      VARIABLE shift  53
+                       INTEGER shift  13
+                        assign shift  54
+
+State 7:
+          array ::= array_begin array_entry_list * array_end
+          array_end ::= * SQUARE_BRACKET_RIGHT
+          array_entry_list ::= array_entry_list * COMMA array_entry
+
+                         COMMA shift  9
+          SQUARE_BRACKET_RIGHT shift  41
+                     array_end shift  42
+
+State 8:
+          command ::= command_begin convention call assign_list * command_end
+          command_end ::= * SEMICOLON
+          assign_list ::= assign_list * ASSIGN assign
+
+                        ASSIGN shift  6
+                     SEMICOLON shift  55
+                   command_end shift  56
+
+State 9:
+          array_entry_list ::= array_entry_list COMMA * array_entry
+          array_entry ::= * INTEGER
+          array_entry ::= * INTEGER COLON INTEGER
+
+                       INTEGER shift  19
+                   array_entry shift  40
+
+State 10:
+          command ::= command_begin * convention call assign_list command_end
+          convention ::= * IDENTIFIER
+      (9) convention ::= *
+
+                    IDENTIFIER shift  32
+                    convention shift  4
+                     {default} reduce 9
+
+State 11:
+          command ::= command_begin convention call * assign_list command_end
+          assign_list ::= * assign_list ASSIGN assign
+     (29) assign_list ::= *
+
+                   assign_list shift  8
+                     {default} reduce 29
+
+State 12:
+          call ::= callee BRACKET_LEFT argument_list * BRACKET_RIGHT
+          argument_list ::= argument_list * COMMA argument
+
+                         COMMA shift  2
+                 BRACKET_RIGHT shift  49
+
+State 13:
+          assign ::= INTEGER * VARIABLE
+          assign ::= INTEGER * BRACKET_LEFT IDENTIFIER BRACKET_RIGHT VARIABLE
+
+                  BRACKET_LEFT shift  26
+                      VARIABLE shift  51
+
+State 14:
+          callee ::= STRING EXCLAMATION * IDENTIFIER
+
+                    IDENTIFIER shift  33
+
+State 15:
+          callee ::= STRING * EXCLAMATION IDENTIFIER
+
+                   EXCLAMATION shift  14
+
+State 16:
+          callee ::= FILENAME EXCLAMATION * IDENTIFIER
+
+                    IDENTIFIER shift  34
+
+State 17:
+          callee ::= FILENAME * EXCLAMATION IDENTIFIER
+
+                   EXCLAMATION shift  16
+
+State 18:
+          array_entry ::= INTEGER COLON * INTEGER
+
+                       INTEGER shift  39
+
+State 19:
+     (26) array_entry ::= INTEGER *
+          array_entry ::= INTEGER * COLON INTEGER
+
+                         COLON shift  18
+                     {default} reduce 26
+
+State 20:
+          argument ::= BRACKET_LEFT IDENTIFIER BRACKET_RIGHT * VARIABLE
+
+                      VARIABLE shift  46
+
+State 21:
+          argument ::= BRACKET_LEFT IDENTIFIER * BRACKET_RIGHT VARIABLE
+
+                 BRACKET_RIGHT shift  20
+
+State 22:
+          argument ::= BRACKET_LEFT * IDENTIFIER BRACKET_RIGHT VARIABLE
+
+                    IDENTIFIER shift  21
+
+State 23:
+          call ::= callee * BRACKET_LEFT argument_list BRACKET_RIGHT
+          call ::= callee * BRACKET_LEFT BRACKET_RIGHT
+
+                  BRACKET_LEFT shift  1
+
+State 24:
+          assign ::= INTEGER BRACKET_LEFT IDENTIFIER BRACKET_RIGHT * VARIABLE
+
+                      VARIABLE shift  50
+
+State 25:
+          assign ::= INTEGER BRACKET_LEFT IDENTIFIER * BRACKET_RIGHT VARIABLE
+
+                 BRACKET_RIGHT shift  24
+
+State 26:
+          assign ::= INTEGER BRACKET_LEFT * IDENTIFIER BRACKET_RIGHT VARIABLE
+
+                    IDENTIFIER shift  25
+
+State 27:
+          assign ::= BRACKET_LEFT IDENTIFIER BRACKET_RIGHT * VARIABLE
+
+                      VARIABLE shift  52
+
+State 28:
+          assign ::= BRACKET_LEFT IDENTIFIER * BRACKET_RIGHT VARIABLE
+
+                 BRACKET_RIGHT shift  27
+
+State 29:
+          assign ::= BRACKET_LEFT * IDENTIFIER BRACKET_RIGHT VARIABLE
+
+                    IDENTIFIER shift  28
+
+State 30:
+      (3) commands ::= command *
+
+                     {default} reduce 3
+
+State 31:
+      (5) command ::= command_end *
+
+                     {default} reduce 5
+
+State 32:
+      (8) convention ::= IDENTIFIER *
+
+                     {default} reduce 8
+
+State 33:
+     (13) callee ::= STRING EXCLAMATION IDENTIFIER *
+
+                     {default} reduce 13
+
+State 34:
+     (12) callee ::= FILENAME EXCLAMATION IDENTIFIER *
+
+                     {default} reduce 12
+
+State 35:
+     (15) argument_list ::= argument *
+
+                     {default} reduce 15
+
+State 36:
+     (11) call ::= callee BRACKET_LEFT BRACKET_RIGHT *
+
+                     {default} reduce 11
+
+State 37:
+     (22) array_begin ::= SQUARE_BRACKET_LEFT *
+
+                     {default} reduce 22
+
+State 38:
+     (25) array_entry_list ::= array_entry *
+
+                     {default} reduce 25
+
+State 39:
+     (27) array_entry ::= INTEGER COLON INTEGER *
+
+                     {default} reduce 27
+
+State 40:
+     (24) array_entry_list ::= array_entry_list COMMA array_entry *
+
+                     {default} reduce 24
+
+State 41:
+     (23) array_end ::= SQUARE_BRACKET_RIGHT *
+
+                     {default} reduce 23
+
+State 42:
+     (21) array ::= array_begin array_entry_list array_end *
+
+                     {default} reduce 21
+
+State 43:
+     (20) argument ::= array *
+
+                     {default} reduce 20
+
+State 44:
+     (19) argument ::= INTEGER *
+
+                     {default} reduce 19
+
+State 45:
+     (18) argument ::= STRING *
+
+                     {default} reduce 18
+
+State 46:
+     (17) argument ::= BRACKET_LEFT IDENTIFIER BRACKET_RIGHT VARIABLE *
+
+                     {default} reduce 17
+
+State 47:
+     (16) argument ::= VARIABLE *
+
+                     {default} reduce 16
+
+State 48:
+     (14) argument_list ::= argument_list COMMA argument *
+
+                     {default} reduce 14
+
+State 49:
+     (10) call ::= callee BRACKET_LEFT argument_list BRACKET_RIGHT *
+
+                     {default} reduce 10
+
+State 50:
+     (33) assign ::= INTEGER BRACKET_LEFT IDENTIFIER BRACKET_RIGHT VARIABLE *
+
+                     {default} reduce 33
+
+State 51:
+     (32) assign ::= INTEGER VARIABLE *
+
+                     {default} reduce 32
+
+State 52:
+     (31) assign ::= BRACKET_LEFT IDENTIFIER BRACKET_RIGHT VARIABLE *
+
+                     {default} reduce 31
+
+State 53:
+     (30) assign ::= VARIABLE *
+
+                     {default} reduce 30
+
+State 54:
+     (28) assign_list ::= assign_list ASSIGN assign *
+
+                     {default} reduce 28
+
+State 55:
+      (7) command_end ::= SEMICOLON *
+
+                     {default} reduce 7
+
+State 56:
+      (4) command ::= command_begin convention call assign_list command_end *
+
+                     {default} reduce 4
+
+State 57:
+      (2) commands ::= commands command *
+
+                     {default} reduce 2
+
+----------------------------------------------------
+Symbols:
+    0: $:
+    1: COMMA
+    2: ASSIGN
+    3: SEMICOLON
+    4: IDENTIFIER
+    5: BRACKET_LEFT
+    6: BRACKET_RIGHT
+    7: FILENAME
+    8: EXCLAMATION
+    9: STRING
+   10: VARIABLE
+   11: INTEGER
+   12: SQUARE_BRACKET_LEFT
+   13: SQUARE_BRACKET_RIGHT
+   14: COLON
+   15: error:
+   16: program: <lambda> SEMICOLON IDENTIFIER FILENAME STRING
+   17: commands: SEMICOLON IDENTIFIER FILENAME STRING
+   18: command: SEMICOLON IDENTIFIER FILENAME STRING
+   19: command_begin: <lambda>
+   20: convention: <lambda> IDENTIFIER
+   21: call: FILENAME STRING
+   22: assign_list: <lambda> ASSIGN
+   23: command_end: SEMICOLON
+   24: callee: FILENAME STRING
+   25: argument_list: BRACKET_LEFT STRING VARIABLE INTEGER SQUARE_BRACKET_LEFT
+   26: argument: BRACKET_LEFT STRING VARIABLE INTEGER SQUARE_BRACKET_LEFT
+   27: array: SQUARE_BRACKET_LEFT
+   28: array_begin: SQUARE_BRACKET_LEFT
+   29: array_entry_list: INTEGER
+   30: array_end: SQUARE_BRACKET_RIGHT
+   31: array_entry: INTEGER
+   32: assign: BRACKET_LEFT VARIABLE INTEGER

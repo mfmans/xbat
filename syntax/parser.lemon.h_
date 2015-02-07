@@ -1,0 +1,14 @@
+#define X_TOKEN_COMMA                            1
+#define X_TOKEN_ASSIGN                           2
+#define X_TOKEN_SEMICOLON                        3
+#define X_TOKEN_IDENTIFIER                       4
+#define X_TOKEN_BRACKET_LEFT                     5
+#define X_TOKEN_BRACKET_RIGHT                    6
+#define X_TOKEN_FILENAME                         7
+#define X_TOKEN_EXCLAMATION                      8
+#define X_TOKEN_STRING                           9
+#define X_TOKEN_VARIABLE                        10
+#define X_TOKEN_INTEGER                         11
+#define X_TOKEN_SQUARE_BRACKET_LEFT             12
+#define X_TOKEN_SQUARE_BRACKET_RIGHT            13
+#define X_TOKEN_COLON                           14

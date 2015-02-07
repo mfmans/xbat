@@ -1,0 +1,38 @@
+/*
+	[xbat]   /syntax/lexer.re2c , 150204   (C) 2005-2015 MF
+*/
+
+
+
+/*!re2c
+	<PUBLIC>"\""								{	BEGIN(STRING);		ALLOC(StringA);				}
+	<PUBLIC>"L\""								{	BEGIN(STRING);		ALLOC(StringW);				}
+
+	<STRING>"\""								{	BEGIN(PUBLIC);		BUILD(String);				}
+
+
+
+	<PUBLIC>[!~,:;()\[\]]						{						BUILD(Operator);			}
+
+	<PUBLIC>"-"?[0-9]+[WL]?						{						BUILD(Integer);				}
+	<PUBLIC>"0x"[0-9a-fA-f]+[WL]?				{						BUILD(Integer);				}
+
+	<PUBLIC>[a-zA-Z_]+[0-9a-zA-Z_]*				{						BUILD(Identifier);			}
+	<PUBLIC>[0-9a-zA-Z_]+"."('dll'|'exe')		{						BUILD(Filename);			}
+
+	<PUBLIC>"$"([a-zA-Z_][0-9a-zA-Z_]*)?		{						BUILD(Variable);			}
+
+	<PUBLIC>" "|"\t"|"\r"|"\n"					{	WHITE();										}
+	<PUBLIC>.									{	ERROR();										}
+
+
+
+	<STRING>"\\"["abfnrtv]						{						MERGE(StringEscape);		}
+	<STRING>"\\"[0-7]{1,3}						{						MERGE(StringOctonary);		}
+	<STRING>"\\x"[0-9a-fA-F]{1,2}				{						MERGE(StringHexadecimal);	}
+	<STRING>.									{						MERGE(StringRaw);			}
+*/
+
+
+
+/**	re2c -c -i -o lexer.re2c.c_ -t lexer.re2c.h_ lexer.re2c		**/

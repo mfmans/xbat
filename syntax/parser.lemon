@@ -1,0 +1,115 @@
+/*
+	[xbat]   /syntax/parser.lemon , 150206   (C) 2005-2015 MF
+*/
+
+
+
+/* === configuration */
+
+
+%name			xParserInternal
+
+%token_prefix	X_TOKEN_
+
+%token_type			{	xTokenStruct *			}
+
+%token_destructor	{	xTokenDelete ($$);		}
+
+%extra_argument		{	xCommandStruct *cmd		}
+
+
+
+%syntax_error {
+	xError ("ÃüÁî #%u : Óï·¨´íÎó¡£", cmd->public_count);
+}
+
+%parse_failure {
+	xError ("ÃüÁî #%u : Óï·¨´íÎó¡£", cmd->public_count);
+}
+
+%stack_overflow {
+	xError ("ÃüÁî #%u : Óï·¨·ÖÎöÕ»Òç³ö£¬ÎÞ·¨Íê³ÉÃüÁî½âÎö¹ý³Ì¡£", cmd->public_count);
+}
+
+
+
+
+/* === terminal symbols */
+
+
+%left	COMMA.					/*	','	*/
+%left	ASSIGN.					/*	'~'	*/
+
+
+
+
+/* === grammar */
+
+
+program	::= commands.
+program	::= .
+
+commands	::=	commands command.
+commands	::= command.
+
+
+command	::= command_begin convention call assign_list command_end.
+command	::= command_end.
+
+
+command_begin	::= .															{	xCommandBegin (cmd);	}
+command_end		::= SEMICOLON.													{	xCommandEnd   (cmd);	}
+
+
+convention	::= IDENTIFIER(B).													{	xCommandConvention (cmd, B);	}
+convention	::= .
+
+
+call	::= callee BRACKET_LEFT argument_list BRACKET_RIGHT.					{	xCommandCall (cmd);		}
+call	::= callee BRACKET_LEFT               BRACKET_RIGHT.					{	xCommandCall (cmd);		}
+
+
+callee	::= FILENAME(A) EXCLAMATION IDENTIFIER(B).								{	xCommandCallee (cmd, A, B);		}
+callee	::= STRING(A)   EXCLAMATION IDENTIFIER(B).								{	xCommandCallee (cmd, A, B);		}
+
+
+argument_list	::= argument_list COMMA argument.
+argument_list	::= argument.
+
+
+argument	::=                                          VARIABLE(A).			{	xCommandArgumentVariable (cmd, A, NULL);	}
+argument	::= BRACKET_LEFT IDENTIFIER(B) BRACKET_RIGHT VARIABLE(A).			{	xCommandArgumentVariable (cmd, A, B   );	}
+argument	::= STRING(A).														{	xCommandArgumentString   (cmd, A      );	}
+argument	::= INTEGER(A).														{	xCommandArgumentInteger  (cmd, A      );	}
+argument	::= array.
+
+
+array	::= array_begin array_entry_list array_end.
+
+array_begin	::= SQUARE_BRACKET_LEFT.											{	xCommandArgumentArrayBegin (cmd);	}
+array_end	::= SQUARE_BRACKET_RIGHT.											{	xCommandArgumentArrayEnd   (cmd);	}
+
+
+array_entry_list	::= array_entry_list COMMA array_entry.
+array_entry_list	::= array_entry.
+
+
+array_entry	::= INTEGER(A).														{	xCommandArgumentArrayAdd (cmd, A, NULL);	}
+array_entry	::= INTEGER(A) COLON INTEGER(B).									{	xCommandArgumentArrayAdd (cmd, A, B   );	}
+
+
+assign_list	::= assign_list ASSIGN assign.
+assign_list	::= .
+
+
+assign	::=									                    VARIABLE(A).	{	xCommandAssign (cmd, A, NULL,  NULL);	}
+assign	::=            BRACKET_LEFT IDENTIFIER(C) BRACKET_RIGHT VARIABLE(A).	{	xCommandAssign (cmd, A, NULL,  C   );	}
+assign	::= INTEGER(B)                                          VARIABLE(A).	{	xCommandAssign (cmd, A, B,     NULL);	}
+assign	::= INTEGER(B) BRACKET_LEFT IDENTIFIER(C) BRACKET_RIGHT VARIABLE(A).	{	xCommandAssign (cmd, A, B,     C   );	}
+
+
+
+
+/**	lemon -Tlempar.c parser.lemon
+	rename parser.c parser.lemon.c_
+	rename parser.h parser.lemon.h_		**/
