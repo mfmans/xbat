@@ -18,7 +18,7 @@ Write your own BAT file and execute it.
 
 ### 语法 Syntax
     !  winapi kernel32.dll!GetCommandLineA () ~0 (uint) $message;     ^
-       user32.dll!MessageBoxA (0, $message, [65 : 2, 0x42, 0x4443, 0L], 0x10) ~4 $;
+       user32.dll!MessageBoxA (0, (uint32) $message, [65 : 2, 0x42, 0x4443, 0L], 0x10) ~4 $;
 
 **!**<br />
 代表 !.exe，即 xbat 主程序文件名。<br />
@@ -35,6 +35,10 @@ This specify what you are calling is "GetCommandLineA" in "kernel32.dll".
 **~0 (uint) $message**<br />
 将第 0 个参数作为无符号整数导出到变量 message，第 0 个参数是函数返回值。支持类型 (uint) (int) (string)，默认为字符串类型。<br />
 This export argument #0 to variable message as an unsigned integer. Argument #0 is return value. "(uint)", "(int)", "(string)" are supported. "(string)" is default.
+
+**(uint32) $message**<br />
+将变量 message 转换为 32 位无符号整数作为参数。支持类型 (int32) (int16) (uint32) (uint16) (string)，默认将变量内容视为字符串。
+Convert the value of variable message to a 32-bit unsigned integer and pass it as an argument. "(int32)", "(int16)", "(uint32)", "(uint16)" are supported. "(string)" is default.
 
 **[65 : 2, 0x42, 0x4443, 0L]**<br />
 生成数组：<br />
