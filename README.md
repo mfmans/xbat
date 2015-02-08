@@ -20,27 +20,27 @@ Write your own BAT file and execute it.
     !  winapi kernel32.dll!GetCommandLineA () ~0 (uint) $message;     ^
        user32.dll!MessageBoxA (0, $message, [65 : 2, 0x42, 0x4443, 0L], 0x10) ~4 $;
 
-**!**
-代表 !.exe，即 xbat 主程序文件名。
+**!**<br />
+代表 !.exe，即 xbat 主程序文件名。<br />
 This means "!.exe". It is the filename of XBAT main program.
 
-**stdcall**
-指定调用方式，支持 cdecl、stdcall（默认）、winapi（等价于 stdcall）。
+**stdcall**<br />
+指定调用方式，支持 cdecl、stdcall（默认）、winapi（等价于 stdcall）。<br />
 This specify the calling convention. You can choose "cdecl", "stdcall" (default), "winapi" (means stdcall).
 
-**kernel32.dll!GetCommandLineA**
-指定调用 kernel32.dll 中的 GetCommandLineA。
+**kernel32.dll!GetCommandLineA**<br />
+指定调用 kernel32.dll 中的 GetCommandLineA。<br />
 This specify what you are calling is "GetCommandLineA" in "kernel32.dll".
 
-**~0 (uint) $message**
-将第 0 个参数作为无符号整数导出到变量 message，第 0 个参数是函数返回值。支持类型 (uint) (int) (string)，默认为字符串类型。
+**~0 (uint) $message**<br />
+将第 0 个参数作为无符号整数导出到变量 message，第 0 个参数是函数返回值。支持类型 (uint) (int) (string)，默认为字符串类型。<br />
 This export argument #0 to variable message as an unsigned integer. Argument #0 is return value. "(uint)", "(int)", "(string)" are supported. "(string)" is default.
 
-**[65 : 2, 0x42, 0x4443, 0L]**
-生成数组：
-This generate an array
+**[65 : 2, 0x42, 0x4443, 0L]**<br />
+生成数组：<br />
+This generate an array<br />
 [0x41, 0x41, 0x42, 0x43, 0x44, 0x00, 0x00, 0x00, 0x00]
 
-**~4 $**
-导出参数 4（0x10）的值到变量 $，变量 $ 代表应用程序退出代码。
+**~4 $**<br />
+导出参数 4（0x10）的值到变量 $，变量 $ 代表应用程序退出代码。<br />
 This export argument #4 (0x10) to variable $. Variable $ is exit code.
