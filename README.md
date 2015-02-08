@@ -52,12 +52,14 @@ RE2C and Lemon are used as lexer and parser in XBAT. XBAT was written in C (main
 *   数组，使用 [value_1, value_2 : count_2] 方式定义，其中 value 和 count 都必须是整数。与直接作为参数的整数不同，作为 value 的整数如果不带尾缀，长度将自动识别，如 0xFF 被识别为 8 位无符号整数。
 *   变量，使用 "$var" 表示，可加上强制类型转换运算符如 "(uint32) $var"。支持的强制类型转换运算符有 "(int32)"、"(int16)"、"(uint32)"、"(uint16)"、"(string)"，可参见下方关于变量的详细叙述。
 
-{5} 为赋值列表，可省略。
+{5} 部分为赋值列表，可省略。
 
 *   "~ (type) $var"，将 GetLastError ( ) 返回值转换为 type 类型并导出到环境变量 *var*。
 *   "~x (type) $var"，将第 x 个参数的值转换为 type 类型并导出到环境变量 *var*。其中 x 是一个整数，不能大于参数个数，0 表示函数返回值。
 
 以上格式中，"(type)" 可选，允许设置为 "(int)"、"(uint)"、"(string)"、"(wstring)"，可参见下方关于变量的详细叙述。如果导出的变量为 "$"，代表设置应用程序退出代码，此时不允许使用强制类型转换。
+
+{6} 部分为半角分号，表示本次调用结束，**不允许省略**。
 
 #### 关于变量：
 
