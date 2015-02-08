@@ -41,9 +41,9 @@ RE2C and Lemon are used as lexer and parser in XBAT. XBAT was written in C (main
 
 {1} 部分为调用规范，可省略。可设置为 "winapi"、"\_winapi"、"\_\_winapi"、"cdecl"、"\_cdecl"、"\_\_cdecl"、"stdcall"、"\_stdcall"、"\_\_stdcall"，不区分大小写。默认为 stdcall。其中 winapi 为 stdcall 的别名。
 
-{2} 部分为文件名，如果文件名符合 *[0-9a-zA-Z\_]+"."('dll'|'exe')*，可以省去引号，否则需要引号包括。
+{2} 部分为文件名，如果文件名符合 `[0-9a-zA-Z_]+"."('dll'|'exe')`，可以省去引号，否则需要引号包括。
 
-{3} 部分为函数名，函数名需要符合 *[a-zA-Z\_]+[0-9a-zA-Z\_]\**。
+{3} 部分为函数名，函数名需要符合 `[a-zA-Z_]+[0-9a-zA-Z_]*`。
 
 {4} 部分为参数列表，允许 0 个参数。支持以下类型的参数：
 
@@ -66,3 +66,19 @@ RE2C and Lemon are used as lexer and parser in XBAT. XBAT was written in C (main
 所谓变量，是指环境变量，**存储的是字符串类型的数据**。读取变量时，如果不进行强制类型转换，直接使用字符串值作为参数，否则将依据字符串值进行相应转换。导出变量时，如果不进行强制类型转换，将会把需要导出的参数值视为带符号整数，使用 "%d" 格式输出，否则视情况使用 "%u"、"%d"、"%s"、"%ls" 进行输出。
 
 注意，XBAT 一般是作为 cmd.exe 的子进程进行执行，运行时继承父进程的环境变量，不能改变父进程的环境变量。
+
+
+## 配置
+
+在 XBAT 启动前，可以设置如下环境变量进行配置。
+
+**__xbat_error_mode**
+
+*   *0* 在命令提示符中输出错误，使用 STDERR（默认）
+*   *1* 使用 Windows 窗口弹出错误提示
+*   *其它值* 禁用错误提示
+
+**__xbat_debug_mode**
+
+*   *0* 禁用调试模式（默认）
+*   *其它值* 启用调试模式，在启动 XBAT 后弹出窗口，显示执行的指令
