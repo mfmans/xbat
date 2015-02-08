@@ -35,7 +35,7 @@
 /* 错误模式 (0=命令行, 1=窗口, 其它=禁用) */
 #define X_CONFIG_ERROR_MODE			"__xbat_error_mode"
 /* 调试模式 (0=关闭, 其它=开启) */
-#define X_CONFIG_DEBUG_MODE			"__xbat_error_debug"
+#define X_CONFIG_DEBUG_MODE			"__xbat_debug_mode"
 
 
 
